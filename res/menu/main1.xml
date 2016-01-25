@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.librelio.activity.MuPDFActivity" >
+    <item 
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="always"
+        android:actionViewClass="android.widget.SearchView"
+        
+        />
+     <item 
+        android:id="@+id/action_navigation"
+        android:title="Navigation"
+        android:icon="@android:drawable/ic_menu_directions"
+        android:showAsAction="ifRoom"
+        
+        />
+
+</menu>
