@@ -218,8 +218,6 @@ public class MuPDFActivity extends Activity implements OnQueryTextListener {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
                 this.finish();
                 break;
 

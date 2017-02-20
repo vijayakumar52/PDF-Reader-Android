@@ -199,11 +199,6 @@
             android:label="@string/appName" >
         </activity>
         
-         <activity
-            android:name="com.librelio.activity.RateUs"
-            android:label="@string/appName" >
-        </activity>
-        
         <activity
             android:name="com.niveales.wind.MainActivity"
             android:label="@string/appName" >
