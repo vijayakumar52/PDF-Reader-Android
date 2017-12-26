@@ -27,7 +27,6 @@ public class MuPDFPageAdapter extends BaseAdapter {
 		pages=new int[cores.length];
 		for(int i=0;i<cores.length;i++)
 		{
-			
 			x=x+cores[i].countPages();
 			pages[i]=x;
 			Log.e("x", ""+x);

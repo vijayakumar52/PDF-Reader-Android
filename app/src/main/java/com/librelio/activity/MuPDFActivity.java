@@ -1,8 +1,5 @@
 package com.librelio.activity;
 
-import java.io.File;
-import java.util.List;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,15 +13,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
@@ -40,14 +32,18 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adsonik.pdfreaderwithdictionary.R;
 import com.artifex.mupdf.MuPDFCore;
 import com.artifex.mupdf.MuPDFPageAdapter;
-import com.artifex.mupdf.PageView;
 import com.artifex.mupdf.view.DocumentReaderView;
 import com.artifex.mupdf.view.ReaderView;
 import com.greysonparrelli.permiso.Permiso;
-import com.niveales.wind.MainActivity;
-import com.adsonik.pdfreaderwithdictionary.R;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 @SuppressLint("NewApi")
 public class MuPDFActivity extends Activity implements OnQueryTextListener {
@@ -85,15 +81,13 @@ public class MuPDFActivity extends Activity implements OnQueryTextListener {
         mSearchText.setText("Search");
         cores = new MuPDFCore[paths.length];
 
-        if (intent.ACTION_VIEW.equals(action)) {
-
-
+        if (Intent.ACTION_VIEW.equals(action)) {
             Permiso.getInstance().requestPermissions(new Permiso.IOnPermissionResult() {
                 @Override
                 public void onPermissionResult(Permiso.ResultSet resultSet) {
                     if (resultSet.areAllPermissionsGranted()) {
                         Uri uri = intent.getData();
-                        String path = uri.getPath();
+                        String path = getFilePath(uri);
                         cores[0] = openFile(path);
                         String title = intent.getData().getLastPathSegment();
                         actionBar.setTitle(title);
@@ -134,8 +128,6 @@ public class MuPDFActivity extends Activity implements OnQueryTextListener {
             }, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         } else {
-
-
             Permiso.getInstance().requestPermissions(new Permiso.IOnPermissionResult() {
                 @Override
                 public void onPermissionResult(Permiso.ResultSet resultSet) {
@@ -183,6 +175,34 @@ public class MuPDFActivity extends Activity implements OnQueryTextListener {
             }, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
 
+    }
+
+    private String getFilePath(Uri uri) {
+        String scheme = uri.getScheme();
+        if ("file".equals(scheme)) {
+            return uri.getPath();
+        } else if ("content".equals(scheme)) {
+            try {
+                InputStream attachment = getContentResolver().openInputStream(uri);
+                if (attachment == null)
+                    Log.e("GMAIL ATTACHMENT", "Mail attachment failed to resolve");
+                else {
+
+                    FileOutputStream tmp = new FileOutputStream(getCacheDir().getPath() + "/temp.myfile");
+                    byte[] buffer = new byte[1024];
+                    while (attachment.read(buffer) > 0)
+                        tmp.write(buffer);
+                    tmp.close();
+                    attachment.close();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return getCacheDir().getPath() + "/temp.myfile";
+        }
+        return null;
     }
 
     @Override

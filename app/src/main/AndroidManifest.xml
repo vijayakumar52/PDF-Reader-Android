@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.adsonik.pdfreaderwithdictionary"
-    android:versionCode="24"
-    android:versionName="1.1.0">
+    package="com.adsonik.pdfreaderwithdictionary">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -22,21 +20,24 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="application/pdf" />
+                <data android:mimeType="application/pdf"
+                    android:scheme="*"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/plain"
+                    android:scheme="*"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="application/x-cbz" />
+                <data android:mimeType="application/x-cbz"
+                    android:scheme="*"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -85,7 +86,8 @@
                 <data android:mimeType="application/oxps" />
                 <data android:mimeType="application/x-cbz" />
                 <data android:mimeType="application/x-cbr" />
-                <data android:mimeType="application/x-fb2" />
+                <data android:mimeType="application/x-fb2"
+                    android:scheme="*"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -155,7 +157,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host=""
+                    android:host="*"
                     android:scheme="file" />
                 <data android:pathPattern=".*\\.pdf" />
             </intent-filter>
@@ -184,7 +186,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host=""
+                    android:host="*"
                     android:scheme="file" />
                 <data android:pathPattern=".*\\.djvu" />
             </intent-filter>
