@@ -33,5 +33,6 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:26.1.0'
     compile 'com.greysonparrelli.permiso:permiso:0.3.0'
+    compile project (':Android-Utils')
 
 }

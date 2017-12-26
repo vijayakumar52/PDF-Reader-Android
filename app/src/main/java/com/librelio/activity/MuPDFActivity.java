@@ -38,6 +38,8 @@ import com.artifex.mupdf.MuPDFPageAdapter;
 import com.artifex.mupdf.view.DocumentReaderView;
 import com.artifex.mupdf.view.ReaderView;
 import com.greysonparrelli.permiso.Permiso;
+import com.vijay.androidutils.FileUtils;
+import com.vijay.androidutils.URIUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -89,35 +91,44 @@ public class MuPDFActivity extends Activity implements OnQueryTextListener {
                         Uri uri = intent.getData();
                         String path = getFilePath(uri);
                         cores[0] = openFile(path);
-                        String title = intent.getData().getLastPathSegment();
+
+                        String scheme = uri.getScheme();
+                        String title = "Untitled";
+                        if ("content".equals(scheme)) {
+                            title = URIUtils.getFileNameFromContentUri(MuPDFActivity.this, uri);
+                        } else if ("file".equals(scheme)) {
+                            title = FileUtils.getFileName(path);
+                        }
                         actionBar.setTitle(title);
-                        boolean pass = false;
-                        String val = myPrefs.getString("key", null);
-                        if (val == null) {
-                            String newnumber = title;
-                            String newnumber1 = path;
-                            myPrefs.edit().putString("key", newnumber).commit();
-                            myPrefs.edit().putString("path", newnumber1).commit();
-                        } else {
-                            String[] valuee = val.split(";", -1);
-                            for (int i = 0; i < valuee.length; i++) {
-                                if (title.equals(valuee[i])) {
-                                    pass = true;
-                                }
-                            }
-                            if (!pass) {
-                                String oldnumber = myPrefs.getString("key", null);
-                                String oldnumber1 = myPrefs.getString("path", null);
-                                String newnumber = oldnumber + ";" + title;
-                                String newnumber1 = oldnumber1 + ";" + path;
+                        if ("file".equals(scheme)) {
+                            boolean pass = false;
+                            String val = myPrefs.getString("key", null);
+                            if (val == null) {
+                                String newnumber = title;
+                                String newnumber1 = path;
                                 myPrefs.edit().putString("key", newnumber).commit();
                                 myPrefs.edit().putString("path", newnumber1).commit();
+                            } else {
+                                String[] valuee = val.split(";", -1);
+                                for (int i = 0; i < valuee.length; i++) {
+                                    if (title.equals(valuee[i])) {
+                                        pass = true;
+                                    }
+                                }
+                                if (!pass) {
+                                    String oldnumber = myPrefs.getString("key", null);
+                                    String oldnumber1 = myPrefs.getString("path", null);
+                                    String newnumber = oldnumber + ";" + title;
+                                    String newnumber1 = oldnumber1 + ";" + path;
+                                    myPrefs.edit().putString("key", newnumber).commit();
+                                    myPrefs.edit().putString("path", newnumber1).commit();
 
+                                }
                             }
                         }
                         createUI(savedInstanceState);
                     } else {
-                        Toast.makeText(MuPDFActivity.this, "App may crash without this permission!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MuPDFActivity.this, "We can't read file without this permission!", Toast.LENGTH_SHORT).show();
                     }
                 }
 

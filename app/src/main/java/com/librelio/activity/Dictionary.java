@@ -71,14 +71,6 @@ public class Dictionary extends Activity {
 			}
 		});
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		 MenuInflater inflater = getMenuInflater();
-			inflater.inflate(R.menu.main3, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
 
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
